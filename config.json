@@ -4,7 +4,7 @@
     },
     "alertmanagers": [
         {
-            "schema": "https",
+            "scheme": "https",
             "hosts": [
                 "localhost:9093"
             ],

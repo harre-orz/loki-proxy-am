@@ -69,15 +69,15 @@ class Handler(http.server.BaseHTTPRequestHandler):
             headers = {
                 'Content-Type': 'application/json',
             }
-            schema = am.get('schema', 'http')
-            if schema == 'https':
+            scheme = am.get('scheme', 'http')
+            if scheme == 'https':
                 context = ssl.create_default_context()
                 if 'tls_config' in am:
                     if am['tls_config'].get('insecure_skip_verify', False):
                         context.check_hostname = False
                         context.verify_mode = ssl.CERT_NONE
             else:
-                schema = 'http'
+                scheme = 'http'
             if 'basic_auth' in am:
                 username = am['basic_auth'].get('username')
                 password = am['basic_auth'].get('password')
@@ -86,7 +86,7 @@ class Handler(http.server.BaseHTTPRequestHandler):
                     user_pass = base64.b64encode(user_pass).decode('utf-8')
                     headers['Authorization'] = 'Basic ' + user_pass
             for host in am.get('hosts', []):
-                url = '{}://{}{}'.format(schema, host, self.path)
+                url = '{}://{}{}'.format(scheme, host, self.path)
                 try:
                     req = urllib.request.Request(
                         url,
